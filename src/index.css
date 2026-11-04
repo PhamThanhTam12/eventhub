@@ -161,3 +161,99 @@ a:focus-visible {
     font-size: 16px;
   }
 }
+/* Lưới danh sách sự kiện */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Thẻ sự kiện */
+.event-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 6%);
+}
+
+/* Ảnh giữ cùng tỷ lệ giữa các thẻ */
+.event-card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #e5e7eb;
+}
+
+/* Nội dung bên dưới ảnh */
+.event-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Nhãn chủ đề */
+.event-category {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #f3e8ff;
+  color: #6d28d9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.event-card-title {
+  margin: 16px 0;
+  font-size: 20px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* Thời gian và địa điểm */
+.event-meta {
+  margin: 8px 0;
+  color: #64748b;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.event-meta strong {
+  color: #475569;
+}
+
+/* Đẩy giá vé xuống cuối nội dung thẻ */
+.event-price {
+  margin: auto 0 0;
+  padding-top: 20px;
+  color: #6d28d9;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* Thông báo khi tải API thất bại */
+.error-message {
+  padding: 16px;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+/* Màn hình vừa: 2 cột */
+@media (max-width: 900px) {
+  .events-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Điện thoại: 1 cột */
+@media (max-width: 600px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}
