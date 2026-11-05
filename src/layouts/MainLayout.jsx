@@ -24,6 +24,9 @@ export default function MainLayout() {
               <Nav.Link as={NavLink} to="/events" eventKey="/events">
                 Sự kiện
               </Nav.Link>
+              <Nav.Link as={NavLink} to="/bookings" eventKey="/bookings">
+                Danh sách đăng ký
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

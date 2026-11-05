@@ -4,7 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import EventDetailPage from "./pages/EventDetailPage";
-
+import BookingsPage from "./pages/BookingsPage";
 export default function App() {
   return (
     <Routes>
@@ -13,7 +13,7 @@ export default function App() {
 
         <Route path="/events" element={<EventsPage />} />
         <Route path="/events/:id" element={<EventDetailPage />} />
-
+        <Route path="/bookings" element={<BookingsPage />} />
         <Route
           path="*"
           element={
