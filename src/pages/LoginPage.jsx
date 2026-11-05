@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Alert, Badge, Button, Card, Col, Form, Row } from "react-bootstrap";
 import FormField from "../components/FormField";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import { getLoginDestination } from "../utils/auth";
 
 export default function LoginPage() {

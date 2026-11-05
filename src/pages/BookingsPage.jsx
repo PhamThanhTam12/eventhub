@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Badge, Button, Modal, Spinner, Table } from "react-bootstrap";
 import { cancelBooking, getBookings } from "../services/bookingService";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 import { canAccessBooking } from "../utils/auth";
 
 const statusLabels = {

@@ -1,6 +1,6 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import MainLayout from "./layouts/MainLayout";
+import MainLayout from "./components/MainLayout";
 import RequireAuth from "./components/RequireAuth";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";

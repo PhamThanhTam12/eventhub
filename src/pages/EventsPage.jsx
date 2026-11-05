@@ -1,18 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import EventCard from "../components/EventCard";
 import ErrorState from "../components/ErrorState";
 import LoadingState from "../components/LoadingState";
-import useFetch from "../hooks/useFetch";
+import { getEvents } from "../services/eventService";
 import { normalizeText } from "../utils/formatters";
 
 export default function EventsPage() {
-  const { data, error, isLoading, retry } = useFetch("/events", { collection: true });
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("all");
   const [priceType, setPriceType] = useState("all");
 
-  const events = data || [];
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadEvents() {
+      try {
+        const data = await getEvents(controller.signal);
+        setEvents(data);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(error);
+          setError("Không tải được dữ liệu. Vui lòng thử lại.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    loadEvents();
+    return () => controller.abort();
+  }, []);
+
+
   const categories = [...new Set(events.map((event) => event.category).filter(Boolean))];
   const filteredEvents = events.filter((event) => {
     const matchesKeyword = normalizeText(event.title).includes(normalizeText(keyword));
@@ -80,7 +103,7 @@ export default function EventsPage() {
       </Card>
 
       {isLoading ? <LoadingState>Đang tải sự kiện...</LoadingState> : error ? (
-        <ErrorState message={error} onRetry={retry} />
+        <ErrorState message={error} onRetry={() => window.location.reload()} />
       ) : filteredEvents.length === 0 ? (
         <Alert variant="info" role="status">
           {events.length === 0 ? "Chưa có sự kiện nào." : "Không tìm thấy sự kiện phù hợp."}

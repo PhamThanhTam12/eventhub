@@ -1,13 +1,37 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
 import EventCard from "../components/EventCard";
 import ErrorState from "../components/ErrorState";
 import LoadingState from "../components/LoadingState";
-import useFetch from "../hooks/useFetch";
+import { getEvents } from "../services/eventService";
 
 export default function HomePage() {
-  const { data, error, isLoading, retry } = useFetch("/events", { collection: true });
-  const events = data || [];
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadEvents() {
+      try {
+        const data = await getEvents(controller.signal);
+        setEvents(data);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(error);
+          setError("Không tải được dữ liệu. Vui lòng thử lại.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    loadEvents();
+    return () => controller.abort();
+  }, []);
+
   const stats = [
     { label: "Sự kiện để khám phá", value: events.length },
     { label: "Chủ đề đa dạng", value: new Set(events.map((event) => event.category)).size },
@@ -60,7 +84,7 @@ export default function HomePage() {
           <Button as={Link} to="/events" variant="outline-primary">Xem tất cả</Button>
         </div>
         {isLoading ? <LoadingState>Đang tải sự kiện...</LoadingState> : error ? (
-          <ErrorState message={error} onRetry={retry} />
+          <ErrorState message={error} onRetry={() => window.location.reload()} />
         ) : events.length === 0 ? (
           <Alert variant="info">Sự kiện mới sẽ được cập nhật tại đây.</Alert>
         ) : (

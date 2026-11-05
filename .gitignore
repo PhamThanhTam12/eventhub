@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 .env
 
-# Automated browser tests
+# Old local output
 playwright-report/
 test-results/

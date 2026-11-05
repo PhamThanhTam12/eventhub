@@ -1,27 +1,53 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Alert, Badge, Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import BookingForm from "../components/BookingForm";
 import ErrorState from "../components/ErrorState";
 import EventImage from "../components/EventImage";
 import LoadingState from "../components/LoadingState";
-import useFetch from "../hooks/useFetch";
-import useAuth from "../hooks/useAuth";
+import { getEventById } from "../services/eventService";
+import { useAuth } from "../context/AuthContext";
 import { formatDate, formatPrice } from "../utils/formatters";
 
 export default function EventDetailPage() {
   const { id } = useParams();
+  return <EventDetailContent key={id} id={id} />;
+}
+
+// Reset the detail state when the event ID on the URL changes.
+function EventDetailContent({ id }) {
   const { user } = useAuth();
-  const { data: event, error, isLoading, retry } = useFetch(
-    "/events/" + encodeURIComponent(id),
-    { allowNotFound: true }
-  );
+  const [event, setEvent] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadEvent() {
+      try {
+        const data = await getEventById(id, controller.signal);
+        setEvent(data);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(error);
+          setError("Không tải được thông tin sự kiện. Vui lòng thử lại.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    loadEvent();
+    return () => controller.abort();
+  }, [id]);
 
   if (isLoading) return <LoadingState>Đang tải thông tin sự kiện...</LoadingState>;
 
   if (error || !event) {
     return (
       <section>
-        {error ? <ErrorState message={error} onRetry={retry} /> : (
+        {error ? <ErrorState message={error} onRetry={() => window.location.reload()} /> : (
           <Alert variant="warning">Sự kiện không tồn tại hoặc đã được xóa.</Alert>
         )}
         <Button as={Link} to="/events" variant="outline-secondary">Quay lại danh sách</Button>

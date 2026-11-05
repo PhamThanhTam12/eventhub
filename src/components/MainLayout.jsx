@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
-import useTheme from "../hooks/useTheme";
-import useAuth from "../hooks/useAuth";
+import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function MainLayout() {
   const { theme, toggleTheme } = useTheme();

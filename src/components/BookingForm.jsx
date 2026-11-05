@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Alert, Button, Form } from "react-bootstrap";
 import { createBooking } from "../services/bookingService";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 
 export default function BookingForm({ event }) {
   const { user } = useAuth();
