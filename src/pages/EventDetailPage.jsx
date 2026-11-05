@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { getEventById } from "../services/eventService";
-
+import BookingForm from "../components/BookingForm";
 export default function EventDetailPage() {
   const { id } = useParams();
 
@@ -154,6 +154,9 @@ export default function EventDetailPage() {
                 </div>
               </ListGroup.Item>
             </ListGroup>
+            <Card.Body className="border-top">
+              <BookingForm key={event.id} event={event} />
+            </Card.Body>
           </Card>
         </Col>
       </Row>
