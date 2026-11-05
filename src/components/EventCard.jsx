@@ -1,4 +1,5 @@
-import { Badge, Card } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function EventCard({ event }) {
   const formattedDate = new Intl.DateTimeFormat("vi-VN", {
@@ -51,6 +52,14 @@ export default function EventCard({ event }) {
         <Card.Text className="fs-5 fw-bold text-primary mt-auto pt-3 mb-0">
           {formattedPrice}
         </Card.Text>
+        <Button
+          as={Link}
+          to={`/events/${event.id}`}
+          variant="primary"
+          className="mt-3"
+        >
+          Xem chi tiết
+        </Button>
       </Card.Body>
     </Card>
   );
