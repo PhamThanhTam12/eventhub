@@ -116,7 +116,7 @@ export default function BookingsPage() {
           Chưa có đăng ký nào. <Link to="/events">Khám phá sự kiện</Link>
         </Alert>
       ) : (
-        <Table responsive striped hover className="align-middle bg-white">
+        <Table responsive striped hover className="align-middle bg-body">
           <thead>
             <tr>
               <th scope="col">Mã</th>
@@ -130,9 +130,9 @@ export default function BookingsPage() {
           </thead>
 
           <tbody>
-            {bookings.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
+            {bookings.map((item, index) => (
+              <tr key={item.id || "missing-" + index}>
+                <td>{item.id || "Thiếu mã"}</td>
 
                 <td>
                   <Link to={`/events/${item.eventId}`}>{item.eventTitle}</Link>
@@ -159,7 +159,7 @@ export default function BookingsPage() {
                   <Button
                     variant="outline-danger"
                     size="sm"
-                    disabled={item.status !== "confirmed"}
+                    disabled={!item.id || item.status !== "confirmed"}
                     onClick={() => handleOpenCancel(item)}
                   >
                     Hủy đăng ký
@@ -219,3 +219,4 @@ export default function BookingsPage() {
     </section>
   );
 }
+
