@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
 import EventCard from "../components/EventCard";
 import ErrorState from "../components/ErrorState";
 import LoadingState from "../components/LoadingState";
-import useFetch from "../hooks/useFetch";
+import { getEvents } from "../services/eventService";
 import { normalizeText } from "../utils/formatters";
 
 export default function EventsPage() {
-  const { data, error, isLoading, retry } = useFetch("/events", { collection: true });
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("all");
   const [priceType, setPriceType] = useState("all");
 
-  const events = data || [];
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadEvents() {
+      try {
+        const data = await getEvents(controller.signal);
+        setEvents(data);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(error);
+          setError("Không tải được dữ liệu. Vui lòng thử lại.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    }
+
+    loadEvents();
+    return () => controller.abort();
+  }, []);
+
   const categories = [...new Set(events.map((event) => event.category).filter(Boolean))];
   const filteredEvents = events.filter((event) => {
     const matchesKeyword = normalizeText(event.title).includes(normalizeText(keyword));
@@ -31,16 +53,21 @@ export default function EventsPage() {
 
   return (
     <section>
-      <h1 className="h2 mb-2">Khám phá sự kiện</h1>
-      <p className="text-body-secondary mb-4">Tìm hoạt động phù hợp với sở thích của bạn.</p>
+      <div className="bg-primary-subtle rounded-4 p-4 p-md-5 mb-4">
+        <p className="small fw-bold text-primary-emphasis text-uppercase mb-2">Tìm điều bạn yêu thích</p>
+        <h1 className="display-6 fw-bold mb-3">Khám phá sự kiện</h1>
+        <p className="text-body-secondary mb-0">
+          Học thêm một điều mới, gặp thêm một người bạn. Bắt đầu từ một sự kiện phù hợp với bạn.
+        </p>
+      </div>
 
-      <Card className="border-0 shadow-sm mb-4">
-        <Card.Body>
+      <Card className="border-0 rounded-4 shadow-sm mb-4">
+        <Card.Body className="p-4">
           <Form role="search" onSubmit={(event) => event.preventDefault()}>
             <Row className="g-3">
               <Col md={6}>
                 <Form.Group controlId="event-keyword">
-                  <Form.Label>Tìm sự kiện</Form.Label>
+                  <Form.Label className="small fw-semibold">Tìm sự kiện</Form.Label>
                   <Form.Control
                     type="search" placeholder="Nhập tên sự kiện..."
                     value={keyword} onChange={(event) => setKeyword(event.target.value)}
@@ -49,7 +76,7 @@ export default function EventsPage() {
               </Col>
               <Col md={3}>
                 <Form.Group controlId="event-category">
-                  <Form.Label>Chủ đề</Form.Label>
+                  <Form.Label className="small fw-semibold">Chủ đề</Form.Label>
                   <Form.Select value={category} onChange={(event) => setCategory(event.target.value)}>
                     <option value="all">Tất cả chủ đề</option>
                     {categories.map((item) => <option key={item} value={item}>{item}</option>)}
@@ -58,7 +85,7 @@ export default function EventsPage() {
               </Col>
               <Col md={3}>
                 <Form.Group controlId="event-price">
-                  <Form.Label>Giá vé</Form.Label>
+                  <Form.Label className="small fw-semibold">Giá vé</Form.Label>
                   <Form.Select value={priceType} onChange={(event) => setPriceType(event.target.value)}>
                     <option value="all">Tất cả mức giá</option>
                     <option value="free">Miễn phí</option>
@@ -68,10 +95,10 @@ export default function EventsPage() {
               </Col>
             </Row>
             <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
-              <span className="text-body-secondary" aria-live="polite">
+              <span className="small fw-semibold text-primary" aria-live="polite">
                 {isLoading ? "Đang tải..." : filteredEvents.length + " / " + events.length + " sự kiện"}
               </span>
-              <Button type="button" variant="outline-secondary" onClick={handleResetFilters}>
+              <Button type="button" variant="outline-secondary" size="sm" className="rounded-pill px-3" onClick={handleResetFilters}>
                 Xóa bộ lọc
               </Button>
             </div>
@@ -80,7 +107,7 @@ export default function EventsPage() {
       </Card>
 
       {isLoading ? <LoadingState>Đang tải sự kiện...</LoadingState> : error ? (
-        <ErrorState message={error} onRetry={retry} />
+        <ErrorState message={error} onRetry={() => window.location.reload()} />
       ) : filteredEvents.length === 0 ? (
         <Alert variant="info" role="status">
           {events.length === 0 ? "Chưa có sự kiện nào." : "Không tìm thấy sự kiện phù hợp."}

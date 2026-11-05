@@ -1,6 +1,6 @@
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { Alert, Button } from "react-bootstrap";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 
 export default function RequireAuth({ children, role }) {
   const { user } = useAuth();

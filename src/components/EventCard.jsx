@@ -5,31 +5,42 @@ import { formatDate, formatPrice } from "../utils/formatters";
 
 export default function EventCard({ event }) {
   return (
-    <Card as="article" className="h-100 border-0 shadow-sm overflow-hidden">
-      <div className="ratio ratio-16x9">
-        <EventImage
-          src={event.image} alt={event.title}
-          loading="lazy" className="w-100 h-100 object-fit-cover"
-        />
+    <Card as="article" className="h-100 border-0 rounded-4 shadow-sm overflow-hidden">
+      <div className="position-relative">
+        <div className="ratio ratio-16x9">
+          <EventImage
+            src={event.image} alt={event.title}
+            loading="lazy" className="w-100 h-100 object-fit-cover"
+          />
+        </div>
+        <Badge bg="primary" className="position-absolute top-0 start-0 m-3 rounded-pill px-3 py-2">
+          {event.category}
+        </Badge>
       </div>
+
       <Card.Body className="d-flex flex-column p-4">
-        <Badge bg="primary" className="align-self-start">{event.category}</Badge>
-        <Card.Title as="h2" className="h5 mt-3 mb-3 text-break">{event.title}</Card.Title>
-        <Card.Text className="small text-body-secondary mb-2">
-          <strong>Thời gian:</strong>{" "}
+        <div className="small fw-semibold text-primary mb-2">
           <time dateTime={event.startAt}>{formatDate(event.startAt)}</time>
+        </div>
+        <Card.Title as="h2" className="h5 fw-bold mb-3 text-break">
+          {event.title}
+        </Card.Title>
+        <Card.Text className="small text-body-secondary mb-4">
+          <span className="fw-semibold">Địa điểm:</span> {event.location}
         </Card.Text>
-        <Card.Text className="small text-body-secondary mb-2">
-          <strong>Địa điểm:</strong> {event.location}
-        </Card.Text>
-        <Card.Text className="fs-5 fw-bold text-primary mt-auto pt-3 mb-0">
-          {formatPrice(event.price)}
-        </Card.Text>
-        {event.id && (
-          <Button as={Link} to={"/events/" + event.id} className="mt-3">
-            Xem chi tiết
-          </Button>
-        )}
+        <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 border-top pt-3 mt-auto">
+          <div>
+            <div className="small text-body-secondary">Giá vé</div>
+            <div className={"fs-5 fw-bold " + (Number(event.price) === 0 ? "text-success" : "text-primary")}>
+              {formatPrice(event.price)}
+            </div>
+          </div>
+          {event.id && (
+            <Button as={Link} to={"/events/" + event.id} variant="outline-primary" className="rounded-pill px-3">
+              Xem chi tiết <span aria-hidden="true">→</span>
+            </Button>
+          )}
+        </div>
       </Card.Body>
     </Card>
   );

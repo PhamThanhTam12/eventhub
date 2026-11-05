@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Alert, Button, Form } from "react-bootstrap";
 import { createBooking } from "../services/bookingService";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../context/AuthContext";
 
 export default function BookingForm({ event }) {
   const { user } = useAuth();
@@ -46,8 +46,8 @@ export default function BookingForm({ event }) {
 
     onSubmit: async (values) => {
       setSubmitError("");
-      if (!user) {
-        setSubmitError("Vui lòng đăng nhập trước khi đăng ký.");
+      if (user?.role !== "user") {
+        setSubmitError("Chỉ tài khoản người dùng được đăng ký vé.");
         return;
       }
 
@@ -77,6 +77,10 @@ export default function BookingForm({ event }) {
       }
     },
   });
+
+  if (user?.role !== "user") {
+    return <Alert variant="info">Đăng ký vé dành cho tài khoản người dùng.</Alert>;
+  }
 
   if (savedBooking) {
     return (
@@ -122,7 +126,8 @@ export default function BookingForm({ event }) {
 
   return (
     <section>
-      <h2 className="h5 mb-3">Đăng ký tham gia</h2>
+      <h2 className="h5 fw-bold mb-2">Đăng ký tham gia</h2>
+      <p className="small text-body-secondary mb-4">Điền thông tin để giữ chỗ cho trải nghiệm của bạn.</p>
 
       {submitError && <Alert variant="danger">{submitError}</Alert>}
 
@@ -200,11 +205,11 @@ export default function BookingForm({ event }) {
             </Form.Text>
           </Form.Group>
 
-          <p className="fw-bold text-primary fs-5">
+          <p className="fw-bold text-primary fs-5 bg-primary-subtle rounded-3 p-3">
             Tổng tiền: {formattedTotal}
           </p>
 
-          <Button type="submit" className="w-100">
+          <Button type="submit" size="lg" className="w-100 rounded-3">
             {formik.isSubmitting ? "Đang đăng ký..." : "Xác nhận đăng ký"}
           </Button>
         </fieldset>
