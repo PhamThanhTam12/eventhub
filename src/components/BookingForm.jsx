@@ -4,15 +4,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Alert, Button, Form } from "react-bootstrap";
 import { createBooking } from "../services/bookingService";
+import useAuth from "../hooks/useAuth";
 
 export default function BookingForm({ event }) {
+  const { user } = useAuth();
   const [savedBooking, setSavedBooking] = useState(null);
   const [submitError, setSubmitError] = useState("");
 
   const formik = useFormik({
     initialValues: {
-      fullName: "",
-      email: "",
+      fullName: user?.name || "",
+      email: user?.email || "",
       phone: "",
       quantity: 1,
     },
@@ -44,6 +46,10 @@ export default function BookingForm({ event }) {
 
     onSubmit: async (values) => {
       setSubmitError("");
+      if (!user) {
+        setSubmitError("Vui lòng đăng nhập trước khi đăng ký.");
+        return;
+      }
 
       try {
         const quantity = Number(values.quantity);
@@ -52,7 +58,7 @@ export default function BookingForm({ event }) {
           eventId: event.id,
           eventTitle: event.title,
           fullName: values.fullName.trim(),
-          email: values.email.trim(),
+          email: user.email,
           phone: values.phone.trim(),
           quantity,
           unitPrice: event.price,
@@ -145,6 +151,7 @@ export default function BookingForm({ event }) {
             <Form.Control
               type="email"
               autoComplete="email"
+              readOnly
               {...formik.getFieldProps("email")}
               isInvalid={formik.touched.email && Boolean(formik.errors.email)}
             />
@@ -152,6 +159,7 @@ export default function BookingForm({ event }) {
             <Form.Control.Feedback type="invalid">
               {formik.errors.email}
             </Form.Control.Feedback>
+            <Form.Text>Email lấy từ tài khoản đang đăng nhập.</Form.Text>
           </Form.Group>
 
           <Form.Group controlId="booking-phone" className="mb-3">

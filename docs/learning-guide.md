@@ -2,7 +2,7 @@
 
 ## 1. Dòng chảy của một trang React
 
-**main.jsx** nạp CSS Bootstrap, ThemeProvider và BrowserRouter. **App.jsx** chọn page theo URL. **MainLayout** bao quanh page bằng navbar, vùng Outlet và footer.
+**main.jsx** nạp CSS Bootstrap, ThemeProvider, BrowserRouter và AuthProvider. **App.jsx** chọn page theo URL. **MainLayout** bao quanh page bằng navbar, vùng Outlet và footer.
 
 Các page gọi service hoặc hook để lấy dữ liệu. Dữ liệu được truyền xuống component con bằng props. Ví dụ **EventDetailPage** truyền object event xuống **BookingForm**; form lấy id, title, price và capacity từ object này.
 
@@ -114,3 +114,19 @@ Khi xác nhận hủy:
 5. Modal đóng và nhãn trạng thái được cập nhật.
 
 Các bản ghi cũ thiếu id được hiển thị là Thiếu mã và không gửi yêu cầu hủy đến URL sai.
+
+## 10. AuthContext và phân quyền giao diện
+
+**data/demoAccounts.js** chứa tài khoản demo. **utils/auth.js** kiểm tra email/mật khẩu, tạo object phiên không có password và xác định quyền xem đăng ký theo email.
+
+**AuthProvider** lưu user trong state, chia sẻ user/login/logout qua Context. localStorage chỉ lưu ID. Khi tải lại, provider tìm ID trong danh sách demo để lấy lại thông tin và vai trò.
+
+**LoginPage** dùng Formik/Yup. Thành công sẽ quay về đường dẫn đang cần đăng nhập hoặc trang mặc định theo vai trò. Đường dẫn trả về được kiểm tra để chỉ điều hướng trong ứng dụng.
+
+**RequireAuth** bọc route riêng tư. Chưa đăng nhập thì Navigate tới /login. Đăng nhập sai vai trò thì hiện trang không có quyền; component quản lý không được render nên không chạy yêu cầu tải dữ liệu.
+
+**MainLayout** lấy user qua useAuth để hiện menu đúng vai trò và cung cấp đăng xuất. **EventDetailPage** hiện lời mời đăng nhập cho khách. **BookingForm** lấy email từ tài khoản thay vì cho chọn chủ sở hữu tùy ý.
+
+**BookingsPage** dùng canAccessBooking để lọc danh sách: admin xem tất cả, user chỉ thấy email của mình. Hàm hủy cũng kiểm tra quyền giao diện trước khi gọi service.
+
+Các bước trên là mô phỏng frontend. MockAPI không xác minh session hay role của request; việc ẩn menu/chặn route không tạo ra phân quyền bảo mật cho API công khai.

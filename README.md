@@ -37,14 +37,29 @@ npm run preview
 | --- | --- |
 | / | Giới thiệu, số liệu từ dữ liệu hiện có, sự kiện nổi bật |
 | /events | Danh sách, tìm kiếm có/không dấu, lọc chủ đề và giá vé |
-| /events/:id | Chi tiết sự kiện, form đăng ký và tính tiền |
-| /bookings | Danh sách đăng ký, xác nhận hủy và lưu trạng thái |
-| /admin/events | Thêm, sửa, xóa sự kiện qua form và hộp xác nhận |
+| /events/:id | Chi tiết công khai; đăng nhập để đặt vé và tính tiền |
+| /login | Đăng nhập tài khoản demo |
+| /bookings | Người dùng xem/hủy vé của mình; admin xem toàn bộ |
+| /admin/events | Chỉ admin: thêm, sửa, xóa sự kiện |
 | Đường dẫn khác | Trang 404 |
 
 Chế độ sáng/tối dùng Context, lưu lựa chọn trong localStorage. Mọi trang có trạng thái tải, rỗng hoặc lỗi phù hợp; ảnh không tải được có ảnh thay thế.
 
-Đây là phạm vi frontend assignment: trang đăng ký hiển thị các bản ghi trong resource bookings, và trang quản lý được mở trực tiếp từ menu.
+## Đăng nhập và vai trò demo
+
+| Vai trò | Email | Mật khẩu |
+| --- | --- | --- |
+| Người dùng | user@eventhub.test | User123! |
+| Admin | admin@eventhub.test | Admin123! |
+
+- Khách xem trang chủ, danh sách và chi tiết. Đặt vé cần đăng nhập.
+- Người dùng không thấy menu quản lý; gõ trực tiếp /admin/events sẽ nhận trang không có quyền.
+- Email đặt vé gắn với tài khoản đăng nhập. Vé của tôi lọc theo email; admin xem toàn bộ resource bookings.
+- Đăng nhập từ chi tiết sẽ quay lại sự kiện đã chọn.
+- Phiên demo lưu ID tài khoản trong localStorage, không lưu mật khẩu. Đăng xuất xóa ID và mở trang đăng nhập.
+- Các đăng ký cũ có email khác tài khoản demo vẫn được admin xem trong danh sách.
+
+Đây là xác thực mô phỏng cho frontend assignment: tài khoản demo nằm trong src/data/demoAccounts.js, và RequireAuth điều khiển route/giao diện. MockAPI vẫn là API công khai, không kiểm tra phiên hoặc quyền trên server. Không cần tạo thêm resource users.
 
 ## Thiết lập MockAPI
 
@@ -106,8 +121,8 @@ Hủy dùng PUT để đổi status thành cancelled và giữ lịch sử. Xóa
 ~~~text
 src/
   components/  EventCard, BookingForm, EventForm, FormField...
-  contexts/    ThemeContext, ThemeProvider
-  hooks/       useFetch, useTheme
+  contexts/    ThemeContext/Provider, AuthContext/Provider
+  hooks/       useFetch, useTheme, useAuth
   layouts/     MainLayout
   pages/       Các trang và điều hướng
   reducers/    eventReducer cho quản lý sự kiện
@@ -120,11 +135,11 @@ src/
 | Components, props, list & keys | EventCard, FormField và danh sách |
 | useState | Từ khóa, bộ lọc, form và hộp xác nhận |
 | useEffect và cleanup | Gọi API, hủy GET khi rời trang, lưu theme |
-| useContext | Chia sẻ theme qua toàn bộ ứng dụng |
+| useContext | Chia sẻ theme và tài khoản/vai trò đăng nhập |
 | useReducer | Các chuyển trạng thái tải/thêm/sửa/xóa ở trang quản lý |
 | Custom hook | useFetch dùng lại trên trang chủ, danh sách và chi tiết |
-| React Router | Routes, NavLink, useParams |
-| Formik + Yup | Form đặt vé và form quản lý sự kiện |
+| React Router | Routes, NavLink, useParams, Navigate và RequireAuth |
+| Formik + Yup | Form đăng nhập, đặt vé và quản lý sự kiện |
 | Fetch, async/await | GET, POST, PUT, DELETE với MockAPI |
 | React Bootstrap | Navbar, Card, Form, Table, Modal, Alert, Spinner |
 
@@ -139,7 +154,7 @@ npx playwright install chromium
 npm run test:e2e
 ~~~
 
-Bộ kiểm thử trình duyệt dùng API giả trong chính browser và không ghi vào project MockAPI thật. Nó kiểm tra tìm kiếm/lọc, validation, tổng tiền, ID đăng ký, hủy và tải lại, CRUD sự kiện, múi giờ, lỗi/retry, ảnh lỗi, theme, menu mobile và dữ liệu cũ thiếu mã.
+Bộ kiểm thử trình duyệt dùng API giả trong chính browser và không ghi vào project MockAPI thật. Nó kiểm tra tìm kiếm/lọc, validation, tổng tiền, ID đăng ký, hủy và tải lại, CRUD sự kiện, múi giờ, lỗi/retry, ảnh lỗi, theme, menu mobile và dữ liệu cũ thiếu mã. Các ca đăng nhập kiểm tra sai mật khẩu, quyền theo URL, phiên khi tải lại/đăng xuất, quay về sự kiện và tách vé giữa các tài khoản.
 
 Nếu đã có Chromium trong môi trường Linux, có thể chỉ định executable bằng biến **PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH**. Trên máy cá nhân, cài browser bằng lệnh Playwright ở trên.
 

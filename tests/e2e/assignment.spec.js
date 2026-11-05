@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mockApi } from "./mockApi";
+import { loginAs } from "./authHelpers";
 
 let pageErrors;
 test.beforeEach(async ({ page }) => {
@@ -41,15 +42,16 @@ test("Search, categories, prices, empty results and reset", async ({ page }) => 
 
 test("Booking validation, amount, generated ID and cancellation survive reload", async ({ page }) => {
   const api = await mockApi(page);
-  await page.goto("/events/2");
+  await loginAs(page, "user", "/events/2");
+  await page.getByLabel("Họ và tên").fill("");
   await page.getByRole("button", { name: "Xác nhận đăng ký", exact: true }).click();
   await expect(page.getByText("Vui lòng nhập họ tên.", { exact: true })).toBeVisible();
   await page.getByLabel("Họ và tên").fill("Nguyễn Văn An");
-  await page.getByLabel("Email", { exact: true }).fill("wrong-email");
+  await expect(page.getByLabel("Email", { exact: true })).toHaveValue("user@eventhub.test");
+  await expect(page.getByLabel("Email", { exact: true })).toHaveAttribute("readonly", "");
   await page.getByLabel("Số điện thoại").fill("123");
   await page.getByRole("button", { name: "Xác nhận đăng ký", exact: true }).click();
-  await expect(page.getByText("Email không hợp lệ.", { exact: true })).toBeVisible();
-  await page.getByLabel("Email", { exact: true }).fill("student@example.test");
+  await expect(page.getByText("Nhập 10 chữ số, bắt đầu bằng số 0.", { exact: true })).toBeVisible();
   await page.getByLabel("Số điện thoại").fill("0900000000");
   await page.getByLabel("Số lượng vé").fill("101");
   await page.getByRole("button", { name: "Xác nhận đăng ký", exact: true }).click();
@@ -83,7 +85,7 @@ test("Booking validation, amount, generated ID and cancellation survive reload",
 
 test("Create, edit and delete events preserve Vietnam time and refresh data", async ({ page }) => {
   const api = await mockApi(page);
-  await page.goto("/admin/events");
+  await loginAs(page, "admin", "/admin/events");
   await page.getByRole("button", { name: "Thêm sự kiện", exact: true }).click();
   await page.getByRole("button", { name: "Tạo sự kiện", exact: true }).click();
   await expect(page.getByText("Vui lòng nhập tên sự kiện.", { exact: true })).toBeVisible();
@@ -120,7 +122,7 @@ test("Create, edit and delete events preserve Vietnam time and refresh data", as
 
 test("A failed save retains form values and allows retry", async ({ page }) => {
   const api = await mockApi(page);
-  await page.goto("/admin/events");
+  await loginAs(page, "admin", "/admin/events");
   await page.getByRole("button", { name: "Thêm sự kiện", exact: true }).click();
   await fillEventForm(page, "Sự kiện thử lại");
   api.failNext = "POST /events";
@@ -175,7 +177,7 @@ test("Read failures can be retried and empty bookings show a useful message", as
   api.failAlways = null;
   await page.getByRole("button", { name: "Thử lại", exact: true }).click();
   await expect(page.getByRole("article")).toHaveCount(3);
-  await page.goto("/bookings");
+  await loginAs(page, "user", "/bookings");
   await expect(page.getByRole("alert")).toContainText("Chưa có đăng ký nào.");
 });
 
@@ -187,7 +189,7 @@ test("Legacy records with missing IDs or unknown status cannot send invalid canc
     { id: "2", eventId: "1", eventTitle: "Legacy status", fullName: "Demo",
       email: "demo@example.test", quantity: 1, totalPrice: 0, status: "status 1" },
   ];
-  await page.goto("/bookings");
+  await loginAs(page, "admin", "/bookings");
   await expect(page.getByText("Thiếu mã", { exact: true })).toBeVisible();
   const buttons = page.getByRole("button", { name: "Hủy đăng ký" });
   await expect(buttons).toHaveCount(2);
