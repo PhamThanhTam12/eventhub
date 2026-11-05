@@ -34,7 +34,7 @@ npm run build
 
 - Khách xem danh sách và chi tiết; đặt vé cần đăng nhập.
 - Người dùng xem/hủy đăng ký theo email tài khoản.
-- Admin thêm/sửa/xóa sự kiện và xem tất cả đăng ký.
+- Admin thêm/sửa/xóa sự kiện và xem tất cả đăng ký; không đăng ký vé bằng tài khoản admin.
 - Đăng xuất bằng menu tài khoản trên thanh điều hướng.
 - Đây là đăng nhập demo ở frontend; MockAPI không kiểm tra quyền trên server.
 

@@ -2,7 +2,7 @@
 export const demoAccounts = [
   {
     id: "demo-user",
-    name: "Người dùng demo",
+    name: "Người dùng",
     email: "user@eventhub.test",
     password: "User123!",
     role: "user",

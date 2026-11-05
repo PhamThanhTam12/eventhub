@@ -29,20 +29,21 @@ export default function MainLayout() {
       >
         <Container>
           <Navbar.Brand as={Link} to="/" className="fw-bold fs-3 text-primary">
+            <span className="bg-primary bg-gradient text-white rounded-3 px-2 py-1 me-2 fs-5" aria-hidden="true">E</span>
             EventHub
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="main-navbar" aria-expanded={expanded} label="Mở hoặc đóng menu" />
           <Navbar.Collapse id="main-navbar">
-            <Nav className="ms-auto align-items-xl-center gap-xl-1">
-              <Nav.Link as={NavLink} to="/" end eventKey="/">Trang chủ</Nav.Link>
-              <Nav.Link as={NavLink} to="/events" eventKey="/events">Sự kiện</Nav.Link>
+            <Nav navbar={false} variant="pills" className="ms-auto flex-column flex-xl-row align-items-xl-center gap-1">
+              <Nav.Link className="px-3 rounded-3" as={NavLink} to="/" end eventKey="/">Trang chủ</Nav.Link>
+              <Nav.Link className="px-3 rounded-3" as={NavLink} to="/events" eventKey="/events">Sự kiện</Nav.Link>
               {user && (
-                <Nav.Link as={NavLink} to="/bookings" eventKey="/bookings">
+                <Nav.Link className="px-3 rounded-3" as={NavLink} to="/bookings" eventKey="/bookings">
                   {user.role === "admin" ? "Danh sách đăng ký" : "Vé của tôi"}
                 </Nav.Link>
               )}
               {user?.role === "admin" && (
-                <Nav.Link as={NavLink} to="/admin/events" eventKey="/admin/events">
+                <Nav.Link className="px-3 rounded-3" as={NavLink} to="/admin/events" eventKey="/admin/events">
                   Quản lý sự kiện
                 </Nav.Link>
               )}
@@ -58,7 +59,7 @@ export default function MainLayout() {
 
               {user ? (
                 <Dropdown align="end">
-                  <Dropdown.Toggle variant="secondary" size="sm" id="account-menu">
+                  <Dropdown.Toggle variant="primary" size="sm" className="rounded-pill px-3" id="account-menu">
                     {user.role === "admin" ? "Admin" : "Tài khoản"}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -75,7 +76,7 @@ export default function MainLayout() {
                 </Dropdown>
               ) : (
                 <Button
-                  as={Link} to="/login" size="sm"
+                  as={Link} to="/login" size="sm" className="rounded-pill px-3"
                   state={{ from: location.pathname + location.search + location.hash }}
                   onClick={() => setExpanded(false)}
                 >
