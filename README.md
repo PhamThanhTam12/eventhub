@@ -42,6 +42,7 @@ npm run build
 
 ~~~text
 src/
+  App.css      CSS tùy chỉnh, nạp sau CSS Bootstrap trong main.jsx
   components/  Các phần giao diện dùng lại và MainLayout
   context/     Đăng nhập và chế độ sáng/tối
   data/        Tài khoản demo

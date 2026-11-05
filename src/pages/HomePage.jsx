@@ -43,7 +43,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Card className="border-0 rounded-4 bg-primary bg-gradient text-white overflow-hidden shadow-sm">
+      <Card className="event-hero border-0 rounded-4 bg-primary bg-gradient text-white overflow-hidden shadow-sm">
         <Card.Body className="p-4 p-lg-5">
           <Row className="g-4 g-xl-5 align-items-center">
             <Col lg={7}>
@@ -68,7 +68,7 @@ export default function HomePage() {
               </p>
             </Col>
             <Col lg={5}>
-              <div className="bg-white bg-opacity-10 rounded-4 p-3 border border-white border-opacity-25">
+              <div className="hero-feature bg-white bg-opacity-10 rounded-4 p-3 border border-white border-opacity-25">
                 {featuredEvent ? (
                   <>
                     <div className="ratio ratio-4x3 rounded-3 overflow-hidden mb-3">
@@ -98,7 +98,7 @@ export default function HomePage() {
         <Row className="g-3 my-4">
           {stats.map((stat) => (
             <Col sm={4} key={stat.label}>
-              <Card className="h-100 border-0 rounded-4 shadow-sm">
+              <Card className="stat-card h-100 border-0 rounded-4 shadow-sm">
                 <Card.Body className="d-flex align-items-center gap-3 p-4">
                   <div className="fs-2 fw-bold text-primary bg-primary-subtle rounded-3 px-3 py-1">{stat.value}</div>
                   <div className="text-body-secondary">{stat.label}</div>
@@ -112,7 +112,7 @@ export default function HomePage() {
       <section className="mt-5">
         <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
           <div>
-            <p className="small text-primary fw-bold text-uppercase mb-2">Đừng bỏ lỡ</p>
+            <p className="section-eyebrow small text-primary fw-bold text-uppercase mb-2">Đừng bỏ lỡ</p>
             <h2 className="h3 fw-bold mb-2">Sự kiện nổi bật</h2>
             <p className="text-body-secondary mb-0">Chọn một sự kiện và bắt đầu kết nối.</p>
           </div>

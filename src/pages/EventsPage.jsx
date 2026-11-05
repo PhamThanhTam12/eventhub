@@ -53,8 +53,8 @@ export default function EventsPage() {
 
   return (
     <section>
-      <div className="bg-primary-subtle rounded-4 p-4 p-md-5 mb-4">
-        <p className="small fw-bold text-primary-emphasis text-uppercase mb-2">Tìm điều bạn yêu thích</p>
+      <div className="page-banner rounded-4 p-4 p-md-5 mb-4">
+        <p className="section-eyebrow small fw-bold text-primary-emphasis text-uppercase mb-2">Tìm điều bạn yêu thích</p>
         <h1 className="display-6 fw-bold mb-3">Khám phá sự kiện</h1>
         <p className="text-body-secondary mb-0">
           Học thêm một điều mới, gặp thêm một người bạn. Bắt đầu từ một sự kiện phù hợp với bạn.

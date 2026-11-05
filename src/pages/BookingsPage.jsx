@@ -112,7 +112,7 @@ export default function BookingsPage() {
     <section>
       <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-          <p className="small fw-bold text-primary text-uppercase mb-2">
+          <p className="section-eyebrow small fw-bold text-primary text-uppercase mb-2">
             {user.role === "admin" ? "Góc quản trị" : "Hành trình của bạn"}
           </p>
           <h1 className="h2 fw-bold mb-2">{user.role === "admin" ? "Danh sách đăng ký" : "Vé của tôi"}</h1>
@@ -130,7 +130,7 @@ export default function BookingsPage() {
           { label: "Đăng ký đã hủy", value: visibleBookings.filter((item) => item.status === "cancelled").length, color: "secondary" },
         ].map((stat) => (
           <Col sm={4} key={stat.label}>
-            <Card className="border-0 rounded-4 shadow-sm h-100">
+            <Card className="stat-card border-0 rounded-4 shadow-sm h-100">
               <Card.Body className="p-4">
                 <div className="small text-body-secondary mb-2">{stat.label}</div>
                 <div className={"h2 fw-bold mb-0 text-" + stat.color}>{stat.value}</div>
@@ -145,7 +145,7 @@ export default function BookingsPage() {
           Chưa có đăng ký nào. <Link to="/events">Khám phá sự kiện</Link>
         </Alert>
       ) : (
-        <Card className="border-0 rounded-4 shadow-sm overflow-hidden">
+        <Card className="data-panel border-0 rounded-4 shadow-sm overflow-hidden">
           <Card.Header className="bg-body border-bottom py-3 px-4 fw-bold">Thông tin đăng ký</Card.Header>
           <Card.Body className="p-0">
             <Table responsive hover className="align-middle mb-0">
