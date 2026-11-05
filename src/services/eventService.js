@@ -11,7 +11,7 @@ export async function getEvents(signal) {
   return data;
 }
 
-export async function getEventById(signal, id) {
+export async function getEventById(id, signal) {
   if (!API_URL) {
     throw new Error("Chưa cấu hình API trong file .env");
   }
