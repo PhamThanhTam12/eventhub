@@ -1,27 +1,27 @@
-const API_URL = import.meta.env.VITE_API_URL;
-export async function getEvents(signal) {
-  if (!API_URL) {
-    throw new Error("Chưa cấu hình API trong file .env");
-  }
-  const response = await fetch(`${API_URL}/events`, { signal });
-  if (!response.ok) {
-    throw new Error("Không thể tải danh sách sự kiện");
-  }
-  const data = await response.json();
-  return data;
+import { apiRequest, getCollection, requireId } from "./apiClient";
+
+export function getEvents(signal) {
+  return getCollection("/events", signal);
 }
 
-export async function getEventById(id, signal) {
-  if (!API_URL) {
-    throw new Error("Chưa cấu hình API trong file .env");
-  }
-  const response = await fetch(`${API_URL}/events/${id}`, { signal });
-  if (response.status === 404) {
-    return null;
-  }
-  if (!response.ok) {
-    throw new Error("Không thể tải danh sách sự kiện");
-  }
-  const data = await response.json();
-  return data;
+export function getEventById(id, signal) {
+  return apiRequest("/events/" + requireId(id), {
+    signal,
+    allowNotFound: true,
+  });
+}
+
+export function createEvent(eventData) {
+  return apiRequest("/events", { method: "POST", body: eventData });
+}
+
+export function updateEvent(id, eventData) {
+  return apiRequest("/events/" + requireId(id), {
+    method: "PUT",
+    body: eventData,
+  });
+}
+
+export function deleteEvent(id) {
+  return apiRequest("/events/" + requireId(id), { method: "DELETE" });
 }

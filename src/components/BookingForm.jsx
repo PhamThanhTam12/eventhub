@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Alert, Button, Form } from "react-bootstrap";
@@ -60,6 +61,9 @@ export default function BookingForm({ event }) {
           createdAt: new Date().toISOString(),
         });
 
+        if (!data?.id) {
+          throw new Error("MockAPI chưa trả mã đăng ký. Hãy kiểm tra trường id kiểu Object ID.");
+        }
         setSavedBooking(data);
       } catch (error) {
         console.error("Lỗi đăng ký vé:", error);
@@ -80,6 +84,10 @@ export default function BookingForm({ event }) {
         <p className="mb-0">
           {savedBooking.quantity} vé — {savedBooking.eventTitle}
         </p>
+
+        <Button as={Link} to="/bookings" variant="success" size="sm" className="mt-3 me-2">
+          Xem đăng ký
+        </Button>
 
         <Button
           type="button"
@@ -196,3 +204,4 @@ export default function BookingForm({ event }) {
     </section>
   );
 }
+
