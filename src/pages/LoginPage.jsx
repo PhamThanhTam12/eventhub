@@ -41,7 +41,7 @@ export default function LoginPage() {
       <Col xl={11}>
         <Row className="g-0 rounded-4 overflow-hidden shadow-sm">
           <Col lg={6} className="d-none d-lg-block">
-            <div className="h-100 bg-primary bg-gradient text-white p-4 p-xl-5">
+            <div className="auth-intro h-100 bg-primary bg-gradient text-white p-4 p-xl-5">
               <Badge bg="light" text="primary" className="rounded-pill px-3 py-2 mb-4">
                 EVENTHUB
               </Badge>
@@ -73,7 +73,7 @@ export default function LoginPage() {
           <Col lg={6} className="bg-body">
             <Card className="h-100 border-0 rounded-0">
               <Card.Body className="d-flex flex-column justify-content-center p-4 p-xl-5">
-                <p className="small fw-bold text-primary text-uppercase mb-2">Chào mừng trở lại</p>
+                <p className="section-eyebrow small fw-bold text-primary text-uppercase mb-2">Chào mừng trở lại</p>
                 <h1 className="h2 fw-bold mb-3">Đăng nhập</h1>
                 <p className="text-body-secondary mb-4">
                   Tiếp tục hành trình khám phá và theo dõi đăng ký của bạn.

@@ -5,12 +5,12 @@ import { formatDate, formatPrice } from "../utils/formatters";
 
 export default function EventCard({ event }) {
   return (
-    <Card as="article" className="h-100 border-0 rounded-4 shadow-sm overflow-hidden">
+    <Card as="article" className="event-card h-100 border-0 rounded-4 shadow-sm overflow-hidden">
       <div className="position-relative">
         <div className="ratio ratio-16x9">
           <EventImage
             src={event.image} alt={event.title}
-            loading="lazy" className="w-100 h-100 object-fit-cover"
+            loading="lazy" className="event-image w-100 h-100 object-fit-cover"
           />
         </div>
         <Badge bg="primary" className="position-absolute top-0 start-0 m-3 rounded-pill px-3 py-2">

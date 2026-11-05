@@ -18,18 +18,18 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="d-flex flex-column min-vh-100 bg-body-tertiary">
+    <div className="site-shell d-flex flex-column min-vh-100 bg-body-tertiary">
       <a className="visually-hidden-focusable p-2" href="#main-content">
         Đến nội dung chính
       </a>
 
       <Navbar
-        expand="xl" bg="body" collapseOnSelect className="border-bottom"
+        expand="xl" collapseOnSelect className="site-navbar py-3"
         expanded={expanded} onToggle={setExpanded}
       >
         <Container>
           <Navbar.Brand as={Link} to="/" className="fw-bold fs-3 text-primary">
-            <span className="bg-primary bg-gradient text-white rounded-3 px-2 py-1 me-2 fs-5" aria-hidden="true">E</span>
+            <span className="brand-mark" aria-hidden="true">E</span>
             EventHub
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="main-navbar" aria-expanded={expanded} label="Mở hoặc đóng menu" />
@@ -92,7 +92,7 @@ export default function MainLayout() {
         <Container><Outlet /></Container>
       </main>
 
-      <footer className="border-top bg-body py-4">
+      <footer className="site-footer border-top bg-body py-4">
         <Container className="d-flex flex-wrap justify-content-between gap-2 small text-body-secondary">
           <span>© {new Date().getFullYear()} EventHub</span>
           <span>Khám phá sự kiện, kết nối đam mê.</span>

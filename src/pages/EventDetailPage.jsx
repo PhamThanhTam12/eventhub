@@ -76,7 +76,7 @@ function EventDetailContent({ id }) {
               </Badge>
             </div>
             <Card.Body className="p-4 p-xl-5">
-              <p className="small fw-bold text-primary text-uppercase mb-2">Trải nghiệm cùng EventHub</p>
+              <p className="section-eyebrow small fw-bold text-primary text-uppercase mb-2">Trải nghiệm cùng EventHub</p>
               <h1 className="h2 fw-bold mb-4">{event.title}</h1>
               <div className="d-flex flex-wrap gap-2 mb-4">
                 <span className="badge rounded-pill bg-primary-subtle text-primary-emphasis px-3 py-2">
@@ -100,7 +100,7 @@ function EventDetailContent({ id }) {
         </Col>
 
         <Col lg={4}>
-          <Card className="border-0 rounded-4 shadow-sm overflow-hidden">
+          <Card className="info-panel border-0 rounded-4 shadow-sm overflow-hidden">
             <Card.Header className="bg-primary bg-gradient text-white border-0 p-4">
               <div className="small text-uppercase text-white text-opacity-75 mb-1">Thông tin sự kiện</div>
               <div className="h3 fw-bold mb-0">{formatPrice(event.price)}</div>

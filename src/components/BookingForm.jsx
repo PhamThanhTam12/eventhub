@@ -205,7 +205,7 @@ export default function BookingForm({ event }) {
             </Form.Text>
           </Form.Group>
 
-          <p className="fw-bold text-primary fs-5 bg-primary-subtle rounded-3 p-3">
+          <p className="ticket-total fw-bold text-primary fs-5 bg-primary-subtle rounded-3 p-3">
             Tổng tiền: {formattedTotal}
           </p>
 

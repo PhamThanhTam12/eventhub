@@ -1,0 +1,371 @@
+/* 1. Màu chủ đạo và biến Bootstrap dùng chung. */
+:root {
+  --bs-primary: #5146e5;
+  --bs-primary-rgb: 81, 70, 229;
+  --bs-link-color: #5146e5;
+  --bs-link-color-rgb: 81, 70, 229;
+  --bs-link-hover-color: #3e32bd;
+  --bs-link-hover-color-rgb: 62, 50, 189;
+  --bs-primary-bg-subtle: #eeecff;
+  --bs-primary-text-emphasis: #39308f;
+  --bs-primary-border-subtle: #dcd7ff;
+  --bs-body-color: #27324b;
+  --bs-tertiary-bg: #f6f7fc;
+  --bs-tertiary-bg-rgb: 246, 247, 252;
+  --bs-border-color: #e5e8f2;
+  --bs-box-shadow-sm: 0 8px 28px rgb(36 42 78 / 6%);
+  --eventhub-accent: #5146e5;
+  --eventhub-soft: #f5f4ff;
+  --eventhub-surface: #fff;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-color: #e6e8f4;
+  --bs-body-bg: #191d2d;
+  --bs-body-bg-rgb: 25, 29, 45;
+  --bs-tertiary-bg: #101421;
+  --bs-tertiary-bg-rgb: 16, 20, 33;
+  --bs-border-color: #30364c;
+  --bs-primary-bg-subtle: #282347;
+  --bs-primary-text-emphasis: #cdc7ff;
+  --bs-primary-border-subtle: #4a4079;
+  --bs-link-color: #b5adff;
+  --bs-link-color-rgb: 181, 173, 255;
+  --bs-link-hover-color: #d4ceff;
+  --bs-link-hover-color-rgb: 212, 206, 255;
+  --bs-box-shadow-sm: 0 8px 28px rgb(0 0 0 / 15%);
+  --eventhub-accent: #b5adff;
+  --eventhub-soft: #22263b;
+  --eventhub-surface: #191d2d;
+}
+
+[data-bs-theme="dark"] .text-success {
+  color: #76d6a7 !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary {
+  --bs-btn-color: #b7bfd3;
+  --bs-btn-border-color: #636c83;
+  --bs-btn-hover-bg: #343b52;
+  --bs-btn-hover-border-color: #788198;
+}
+
+/* 2. Nền trang, chữ và thanh điều hướng. */
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .navbar-brand {
+  letter-spacing: -0.035em;
+}
+
+.text-primary {
+  color: var(--eventhub-accent) !important;
+}
+
+.site-shell {
+  background-image: radial-gradient(ellipse at top left, rgb(81 70 229 / 6%), transparent 38rem);
+}
+
+.site-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: rgb(var(--bs-body-bg-rgb) / 94%);
+  border-bottom: 1px solid var(--bs-border-color);
+  backdrop-filter: blur(16px);
+}
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.8rem;
+  color: #fff;
+  background: linear-gradient(135deg, #7466ff, #4338ca);
+  box-shadow: 0 5px 12px rgb(81 70 229 / 22%);
+  font-size: 1.2rem;
+  letter-spacing: 0;
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: #5146e5;
+}
+
+.site-navbar .nav-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--bs-secondary-color);
+}
+
+.site-navbar .nav-link.active {
+  color: #fff;
+  box-shadow: 0 4px 12px rgb(81 70 229 / 18%);
+}
+
+.site-navbar .nav-link:not(.active):hover {
+  color: var(--eventhub-accent);
+  background-color: var(--bs-primary-bg-subtle);
+}
+
+.site-footer {
+  background-image: linear-gradient(90deg, rgb(81 70 229 / 3%), transparent);
+}
+
+/* 3. Nút bấm, ô nhập và trạng thái focus. */
+.btn {
+  font-weight: 600;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.btn-primary {
+  --bs-btn-bg: #5146e5;
+  --bs-btn-border-color: #5146e5;
+  --bs-btn-hover-bg: #4338ca;
+  --bs-btn-hover-border-color: #4338ca;
+  --bs-btn-active-bg: #3730a3;
+  --bs-btn-active-border-color: #3730a3;
+  --bs-btn-disabled-bg: #5146e5;
+  --bs-btn-disabled-border-color: #5146e5;
+  --bs-btn-focus-shadow-rgb: 81, 70, 229;
+  box-shadow: 0 4px 10px rgb(81 70 229 / 15%);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--eventhub-accent);
+  --bs-btn-border-color: var(--eventhub-accent);
+  --bs-btn-hover-bg: #5146e5;
+  --bs-btn-hover-border-color: #5146e5;
+  --bs-btn-active-bg: #4338ca;
+  --bs-btn-active-border-color: #4338ca;
+  --bs-btn-focus-shadow-rgb: 81, 70, 229;
+}
+
+.form-control, .form-select {
+  min-height: 2.8rem;
+  border-radius: 0.75rem;
+  border-color: var(--bs-border-color);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #948aff;
+  box-shadow: 0 0 0 0.22rem rgb(81 70 229 / 12%);
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-control[readonly] {
+  background-color: var(--eventhub-soft);
+}
+
+/* 4. Banner trang chủ, trang sự kiện và trang đăng nhập. */
+.event-hero {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(120deg, #202044, #4338ca 60%, #7865ec) !important;
+}
+
+.event-hero::before, .auth-intro::before {
+  position: absolute;
+  right: -7rem;
+  top: -10rem;
+  z-index: -1;
+  width: 32rem;
+  height: 32rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4rem rgb(255 255 255 / 3%), 0 0 0 8rem rgb(255 255 255 / 3%);
+  content: "";
+  pointer-events: none;
+}
+
+.event-hero h1 {
+  font-size: clamp(2.25rem, 4.1vw, 3.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+
+.hero-feature {
+  box-shadow: 0 20px 40px rgb(14 15 52 / 18%);
+  backdrop-filter: blur(12px);
+}
+
+.event-hero .badge.text-primary, .auth-intro .badge.text-primary {
+  color: #4338ca !important;
+}
+
+.page-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(110deg, var(--bs-primary-bg-subtle), var(--eventhub-surface));
+  border: 1px solid var(--bs-primary-border-subtle);
+}
+
+.page-banner::after {
+  position: absolute;
+  right: -1rem;
+  top: -4rem;
+  z-index: -1;
+  width: 19rem;
+  height: 19rem;
+  border: 2.5rem solid rgb(81 70 229 / 5%);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 0.09em;
+}
+
+.section-eyebrow::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex-shrink: 0;
+  background: currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.auth-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(150deg, #242049, #5146d8 70%, #8070ec) !important;
+}
+
+/* 5. Thẻ sự kiện, thống kê và thông tin đặt vé. */
+.event-card {
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.event-image {
+  transition: transform 0.4s;
+}
+
+.event-card .ratio {
+  overflow: hidden;
+}
+
+.event-card .card-title {
+  line-height: 1.45;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #5146e5, #b2a7ff);
+  content: "";
+}
+
+.info-panel .card-header {
+  background: linear-gradient(120deg, #38317c, #6352e6) !important;
+}
+
+.ticket-total {
+  border: 1px dashed var(--bs-primary-border-subtle);
+}
+
+/* 6. Bảng dữ liệu và hộp thoại thêm/sửa/xóa. */
+.data-panel .table {
+  --bs-table-bg: var(--eventhub-surface);
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-hover-bg: var(--eventhub-soft);
+  --bs-table-border-color: var(--bs-border-color);
+}
+
+.data-panel .table-light {
+  --bs-table-bg: var(--eventhub-soft);
+  --bs-table-color: var(--bs-secondary-color);
+}
+
+.data-panel .table > :not(caption) > * > * {
+  padding: 1rem;
+}
+
+.data-panel th {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.modal-content {
+  overflow: hidden;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 80px rgb(15 20 45 / 22%);
+}
+
+.modal-header, .modal-body, .modal-footer {
+  padding: 1.25rem 1.5rem;
+}
+
+.dropdown-menu {
+  padding: 0.6rem;
+  border-color: var(--bs-border-color);
+  border-radius: 0.9rem;
+  box-shadow: var(--bs-box-shadow-sm);
+}
+
+.dropdown-item {
+  border-radius: 0.5rem;
+}
+
+/* 7. Chỉ dùng hover trên thiết bị có con trỏ; tôn trọng reduced motion. */
+@media (hover: hover) and (pointer: fine) {
+  .event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgb(36 42 78 / 13%) !important;
+  }
+
+  .event-card:hover .event-image {
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .site-navbar {
+    padding-block: 0.6rem !important;
+  }
+
+  .event-hero h1 {
+    font-size: 2.1rem;
+  }
+
+  .modal-header, .modal-body, .modal-footer {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .event-card, .event-image {
+    transition: none;
+  }
+
+  .event-card:hover, .event-card:hover .event-image {
+    transform: none;
+  }
+}
