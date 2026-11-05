@@ -5,10 +5,12 @@ import ErrorState from "../components/ErrorState";
 import EventImage from "../components/EventImage";
 import LoadingState from "../components/LoadingState";
 import useFetch from "../hooks/useFetch";
+import useAuth from "../hooks/useAuth";
 import { formatDate, formatPrice } from "../utils/formatters";
 
 export default function EventDetailPage() {
   const { id } = useParams();
+  const { user } = useAuth();
   const { data: event, error, isLoading, retry } = useFetch(
     "/events/" + encodeURIComponent(id),
     { allowNotFound: true }
@@ -73,10 +75,22 @@ export default function EventDetailPage() {
               </ListGroup.Item>
             </ListGroup>
             <Card.Body className="border-top">
-              {event.id ? <BookingForm key={event.id} event={event} /> : (
+              {!event.id ? (
                 <Alert variant="warning" className="mb-0">
                   Sự kiện chưa có mã để đăng ký. Vui lòng thử lại sau.
                 </Alert>
+              ) : user ? (
+                <BookingForm key={user.id + ":" + event.id} event={event} />
+              ) : (
+                <div>
+                  <p className="text-body-secondary">Đăng nhập để đăng ký tham gia sự kiện này.</p>
+                  <Button
+                    as={Link} to="/login" className="w-100"
+                    state={{ from: "/events/" + event.id }}
+                  >
+                    Đăng nhập để đăng ký
+                  </Button>
+                </div>
               )}
             </Card.Body>
           </Card>

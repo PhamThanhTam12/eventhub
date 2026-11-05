@@ -1,6 +1,8 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import MainLayout from "./layouts/MainLayout";
+import RequireAuth from "./components/RequireAuth";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import EventDetailPage from "./pages/EventDetailPage";
@@ -14,8 +16,13 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/events/:id" element={<EventDetailPage />} />
-        <Route path="/bookings" element={<BookingsPage />} />
-        <Route path="/admin/events" element={<ManageEventsPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/bookings" element={
+          <RequireAuth><BookingsPage /></RequireAuth>
+        } />
+        <Route path="/admin/events" element={
+          <RequireAuth role="admin"><ManageEventsPage /></RequireAuth>
+        } />
         <Route
           path="*"
           element={

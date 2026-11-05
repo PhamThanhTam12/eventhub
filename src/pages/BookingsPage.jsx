@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Badge, Button, Modal, Spinner, Table } from "react-bootstrap";
 import { cancelBooking, getBookings } from "../services/bookingService";
+import useAuth from "../hooks/useAuth";
+import { canAccessBooking } from "../utils/auth";
 
 const statusLabels = {
   confirmed: "Đã xác nhận",
@@ -9,6 +11,7 @@ const statusLabels = {
 };
 
 export default function BookingsPage() {
+  const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -65,7 +68,7 @@ export default function BookingsPage() {
   }
 
   async function handleCancelBooking() {
-    if (!selectedBooking || isCancelling) {
+    if (!selectedBooking || isCancelling || !canAccessBooking(user, selectedBooking)) {
       return;
     }
 
@@ -90,6 +93,8 @@ export default function BookingsPage() {
     }
   }
 
+  const visibleBookings = bookings.filter((booking) => canAccessBooking(user, booking));
+
   if (isLoading) {
     return (
       <div className="d-flex align-items-center gap-2" role="status">
@@ -105,13 +110,13 @@ export default function BookingsPage() {
 
   return (
     <section>
-      <h1 className="h2 mb-2">Danh sách đăng ký</h1>
+      <h1 className="h2 mb-2">{user.role === "admin" ? "Danh sách đăng ký" : "Vé của tôi"}</h1>
 
       <p className="text-body-secondary mb-4">
-        Tổng cộng {bookings.length} lượt đăng ký.
+        Tổng cộng {visibleBookings.length} lượt đăng ký.
       </p>
 
-      {bookings.length === 0 ? (
+      {visibleBookings.length === 0 ? (
         <Alert variant="info">
           Chưa có đăng ký nào. <Link to="/events">Khám phá sự kiện</Link>
         </Alert>
@@ -130,7 +135,7 @@ export default function BookingsPage() {
           </thead>
 
           <tbody>
-            {bookings.map((item, index) => (
+            {visibleBookings.map((item, index) => (
               <tr key={item.id || "missing-" + index}>
                 <td>{item.id || "Thiếu mã"}</td>
 
@@ -159,7 +164,7 @@ export default function BookingsPage() {
                   <Button
                     variant="outline-danger"
                     size="sm"
-                    disabled={!item.id || item.status !== "confirmed"}
+                    disabled={!item.id || item.status !== "confirmed" || !canAccessBooking(user, item)}
                     onClick={() => handleOpenCancel(item)}
                   >
                     Hủy đăng ký

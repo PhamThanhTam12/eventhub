@@ -20,6 +20,8 @@ Bộ E2E tự động sử dụng dữ liệu giả riêng trong trình duyệt.
 
 ## Quản lý sự kiện
 
+Đăng nhập bằng admin@eventhub.test / Admin123! trước khi kiểm tra.
+
 1. Vào Quản lý sự kiện, tạo một sự kiện tên dễ nhận biết để thử bài.
 2. Kiểm tra dữ liệu trống, URL ảnh sai, giá âm, sức chứa bằng 0 đều bị chặn.
 3. Nhập dữ liệu hợp lệ, lưu và xem bản ghi mới trên MockAPI.
@@ -29,6 +31,8 @@ Bộ E2E tự động sử dụng dữ liệu giả riêng trong trình duyệt.
 7. Mở lại và Xác nhận xóa: bản ghi biến mất cả sau khi tải lại.
 
 ## Đặt và hủy vé
+
+Đăng nhập bằng user@eventhub.test / User123!; email trên form được gắn với tài khoản này.
 
 1. Chọn một sự kiện; thử email, điện thoại và số lượng không hợp lệ.
 2. Chọn 2 vé, kiểm tra tổng tiền = giá một vé nhân 2.
@@ -46,3 +50,15 @@ Bộ E2E tự động sử dụng dữ liệu giả riêng trong trình duyệt.
 - Mất kết nối hiển thị thông báo; các nút gửi được mở lại sau khi lỗi.
 - Các trang có nút Thử lại tải lại dữ liệu.
 - Trước khi nộp: npm run lint, npm test và npm run build đều thành công.
+
+## Đăng nhập và phân vai trò
+
+- Khách mở /bookings hoặc /admin/events được chuyển sang /login.
+- Đăng nhập sai mật khẩu hiện thông báo, không tạo phiên.
+- User chỉ thấy Vé của tôi, không thấy menu quản lý.
+- User gõ /admin/events vẫn không được mở form thêm/sửa/xóa.
+- Admin xem toàn bộ đăng ký và mở được quản lý sự kiện.
+- Email trên form đặt vé lấy từ tài khoản, không chỉnh sửa qua ô nhập.
+- Đăng xuất rồi mở lại đường dẫn riêng tư phải đăng nhập.
+- Tải lại khi còn đăng nhập vẫn giữ tài khoản.
+- Trên điện thoại, menu tài khoản và đăng xuất dùng được; menu chính thu gọn sau khi đăng xuất.
